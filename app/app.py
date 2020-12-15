@@ -39,7 +39,6 @@ def form_edit_get(hw_id):
     return render_template('edit.html', title='Edit Form', hw_200=result)
 
 
-
 @app.route('/edit/<int:hw_id>', methods=['POST'])
 def form_update_post(hw_id):
     cursor = mysql.get_db().cursor()
@@ -53,6 +52,16 @@ def form_update_post(hw_id):
 @app.route('/hw/new', methods=['GET'])
 def form_insert_get():
     return render_template('new.html', title='New HW Form')
+
+@app.route('/hw/bmi', methods=['POST' ,'GET'])
+def bmi():
+    bmi=''
+    if request.method=='POST' and 'weight' in request.form and 'height' in request.form:
+        Weight=float(request.form.get('weight'))
+        Height=float(request.form.get('height'))
+        bmi=round(Weight/((Height/100)**2),2)
+
+    return render_template('BMI.html', bmi=bmi)
 
 
 @app.route('/hw/new', methods=['POST'])
@@ -72,6 +81,7 @@ def form_delete_post(hw_id):
     cursor.execute(sql_delete_query, hw_id)
     mysql.get_db().commit()
     return redirect("/", code=302)
+
 
 
 
