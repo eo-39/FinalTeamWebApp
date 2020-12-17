@@ -104,10 +104,10 @@ def api_retrieve(hw_id) -> str:
     resp = Response(json_result, status=200, mimetype='application/json')
     return resp
 
-@app.route('/api/v1/hw/bmi/<int:hw_id>',methods=['GET'])
-def api_bmi(hw_id) -> str:
+@app.route('/api/v1/hw/bmi',methods=['GET'])
+def api_bmi() -> str:
     cursor = mysql.get_db().cursor()
-    cursor.execute('SELECT BMI , hwData FROM hw_200 WHERE id=%s',hw_id)
+    cursor.execute('SELECT BMI FROM hw_200')
     result = cursor.fetchall()
     json_result = json.dumps(result);
     resp = Response(json_result, status=200, mimetype='application/json')
