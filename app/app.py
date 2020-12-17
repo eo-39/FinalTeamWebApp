@@ -42,8 +42,8 @@ def form_edit_get(hw_id):
 @app.route('/edit/<int:hw_id>', methods=['POST'])
 def form_update_post(hw_id):
     cursor = mysql.get_db().cursor()
-    inputdata = (request.form.get('Index'), request.form.get('Height'), request.form.get('Weight'), hw_id)
-    sql_update_query = """UPDATE hw_200 t SET t.`Index` = %s, t.Height = %s, t.Weight = %s WHERE t.id = %s """
+    inputdata = (request.form.get('Index'), request.form.get('Height'), request.form.get('Weight'), request.form.get('Weight'), hw_id)
+    sql_update_query = """UPDATE hw_200 t SET t.`Index` = %s, t.Height = %s, t.Weight = %s, t.BMI = %s WHERE t.id = %s """
     cursor.execute(sql_update_query, inputdata)
     mysql.get_db().commit()
     return redirect("/", code=302)
@@ -68,8 +68,8 @@ def bmi():
 def form_insert_post():
     cursor = mysql.get_db().cursor()
     inputdata = (request.form.get('Index'), request.form.get('Height'), request.form.get('Weight'))
-    sql_insert_query = """INSERT INTO hw_200 (`Index`,Height,Weight) 
-                 VALUES (%s, %s, %s) """
+    sql_insert_query = """INSERT INTO hw_200 (`Index`,Height,Weight,BMI) 
+                 VALUES (%s, %s, %s,%s) """
     cursor.execute(sql_insert_query, inputdata)
     mysql.get_db().commit()
     return redirect("/", code=302)
@@ -104,14 +104,22 @@ def api_retrieve(hw_id) -> str:
     resp = Response(json_result, status=200, mimetype='application/json')
     return resp
 
+@app.route('/api/v1/hw/bmi/<int:hw_id>',methods=['GET'])
+def api_bmi(hw_id) -> str:
+    cursor = mysql.get_db().cursor()
+    cursor.execute('SELECT BMI , hwData FROM hw_200 WHERE id=%s',hw_id)
+    result = cursor.fetchall()
+    json_result = json.dumps(result);
+    resp = Response(json_result, status=200, mimetype='application/json')
+    return resp
 
 @app.route('/api/v1/hw', methods=['POST'])
 def api_add() -> str:
     cursor = mysql.get_db().cursor()
     content = request.json
     inputdata = (content['Index'], content['Height'], content['Weight'])
-    sql_insert_query = """INSERT INTO hw_200 (`Index`,Height,Weight) 
-                 VALUES (%s, %s, %s) """
+    sql_insert_query = """INSERT INTO hw_200 (`Index`,Height,Weight,BMI) 
+                 VALUES (%s, %s, %s, %s) """
     cursor.execute(sql_insert_query, inputdata)
     mysql.get_db().commit()
     resp = Response(status=201, mimetype='application/json')
@@ -123,7 +131,7 @@ def api_edit(hw_id) -> str:
     cursor = mysql.get_db().cursor()
     content = request.json
     inputdata = (content['Index'], content['Height'], content['Weight'] , hw_id)
-    sql_update_query = """UPDATE hw_200 t SET t.`Index` = %s, t.Height = %s, t.Weight = %s WHERE t.id = %s """
+    sql_update_query = """UPDATE hw_200 t SET t.`Index` = %s, t.Height = %s, t.Weight = %s, t.BMI= %s WHERE t.id = %s """
     cursor.execute(sql_update_query, inputdata)
     mysql.get_db().commit()
     resp = Response(status=200, mimetype='application/json')

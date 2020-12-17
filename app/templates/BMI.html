@@ -8,14 +8,19 @@
     <title>BMI</title>
 </head>
     <body>
-        <form action="/hw/bmi" method="POST">
-        Weight(Kg)
-        <input type="text" name="weight"><br>
-        Height(Cm)
-        <input type="text" name="height"><br>
-        <button type="submit" value="submit">Calculate</button>
-        </form>
 
+       <form action="/hw/bmi" method="POST">
+  <div class="form-group">
+    <label for="weight">Weight(Kg)</label>
+    <input type="text" class="form-control" name="weight" aria-describedby="Weight" placeholder="Weight">
+  </div>
+  <div class="form-group">
+    <label for="height">Height(Cm)</label>
+    <input type="text" class="form-control" name="height" placeholder="Height">
+  </div>
+  <button type="submit" value="submit" class="btn btn-primary">Calculate</button>
+</form>
+<br>
 {% if bmi %}
         <p>Your BMI is {{ bmi }}</p>
     {% endif %}
@@ -24,4 +29,7 @@
 
     </html>
 
+
+
 {% endblock %}
+
