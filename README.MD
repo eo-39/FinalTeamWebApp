@@ -6,9 +6,9 @@
   - On the BMI Calucaltor Page, users will have the ability to calucalate their own BMI and find out whether they meet the proper treshold regarding weight. 
   - Postman is used to retrieve BMI from the table.
     
-## [Install and Run Instructions]()
+## [API BMI Calculator with Instructions](./apibmicaluclator.pdf)
 
-## [Runtime Feature Examples](./examples.md)
+## [Log in Page](./examples.md)
 
 
 
